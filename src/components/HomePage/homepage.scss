@@ -6,21 +6,24 @@
 .carousel {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin: 0 12%;
 }
 
 .recent-experiences {
-  display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #3e5e32;
-  height: 280px;
-  color: white;
   flex-direction: column;
   padding: 10px;
-}
 
-.experience-button {
-  background-color: white;
-  padding: 5px;
+  button {
+    padding: 10px;
+    font-size: medium;
+    margin: 10px 0px;
+  }
+
+  a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 }

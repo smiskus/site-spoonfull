@@ -3,37 +3,47 @@ import type { Experience } from "src/types";
 import "./experienceCard.scss";
 
 export const ExperienceCard = ({ experience }: { experience: Experience }) => {
-  const { restaurantName, date, rating, reviews } = experience;
+  const { restaurantName, date, rating, reviews, experienceId } = experience;
   const formattedDate = format(new Date(date), "MMM i, yyyy");
 
+  // TODO: Pull from profile name
+  const userReview = reviews.find((review) => review.personName === "Josh");
+
+  if (!userReview) {
+    return null;
+  }
+
+  const allDishes = userReview?.dishes?.reduce<string[]>(
+    (acc, currentDish) => [...acc, currentDish.dishName],
+    []
+  );
+
+  const experienceLink = `/experience/${experienceId}`;
+
   return (
-    <div className="container">
-      <div className="card">
+    <div className="card">
+      <div>
+        <h2>{restaurantName}</h2>
+        <div>{formattedDate}</div>
+      </div>
+      <hr />
+      <div>
         <div>
-          <h2>{restaurantName}</h2>
-          <div>{formattedDate}</div>
+          <b>Dishes eaten: </b>
+          {allDishes?.join()}
         </div>
-        <hr />
+        {userReview.notes ? (
+          <div>
+            <b>Notes: </b>
+            {userReview.notes}
+          </div>
+        ) : null}
         <div>
-          {reviews.map((review) => {
-            const allDishes = review.dishes.reduce<string[]>(
-              (acc, currentDish) => [...acc, currentDish.dishName],
-              []
-            );
-            return (
-              <>
-                <h3>{review.personName}</h3>
-                <div>
-                  <b>Dishes eaten: </b>
-                  {allDishes.join()}
-                </div>
-                <div>
-                  <b>Rating: </b>
-                  {rating} spoons
-                </div>
-              </>
-            );
-          })}
+          <b>Rating: </b>
+          {userReview.rating} spoons
+        </div>
+        <div className="details-link">
+          <a href={experienceLink}>See full details</a>
         </div>
       </div>
     </div>

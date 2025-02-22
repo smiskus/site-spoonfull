@@ -9,12 +9,12 @@ export interface Restuarant {
 }
 
 export interface Experience {
+  experienceId: string;
   date: string;
   restaurantName: string;
   restaurantId: string;
   rating: number;
   reviews: Review[];
-  notes?: string;
 }
 
 export interface Review {
@@ -22,6 +22,7 @@ export interface Review {
   personId: string;
   rating: number;
   dishes: Dish[];
+  notes?: string;
 }
 
 export interface Dish {

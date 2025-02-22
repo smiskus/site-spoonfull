@@ -1,18 +1,17 @@
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #3e5e32;
-  width: 300px;
-  height: 300px;
-}
-
 .card {
   background-color: white;
   justify-content: center;
   align-content: center;
   text-align: center;
-  padding: 10px;
-  width: 250px;
+  padding: 5px;
   height: 250px;
+  width: 250px;
+  margin: 12px;
+}
+
+.details-link {
+  margin-top: 10px;
+  background-color: #adc2a7;
+  padding: 8px;
+  text-align: center;
 }

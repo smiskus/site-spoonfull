@@ -2,30 +2,10 @@ import type { Experience } from "src/types";
 import { ExperienceCard } from "./ExperienceCard";
 import axios from "axios";
 import { useQuery } from "react-query";
+import { useCallback, useState } from "react";
 
 export const LatestExperiencesCarousel = () => {
-  // TODO: Replace with API call
-  // const latestExperiences = [
-  //   {
-  //     date: "2025-02-15",
-  //     restaurantName: "Element Pizza",
-  //     restaurantId: "12345",
-  //     rating: 3.5,
-  //     reviews: [
-  //       {
-  //         personName: "Josh",
-  //         personId: "1",
-  //         dishes: [
-  //           {
-  //             dishName: "Hot Honey",
-  //           },
-  //         ],
-  //       },
-  //     ],
-  //     notes: "It was okay.",
-  //   },
-  // ] as Experience[];
-
+  const [pageNum, setPageNum] = useState(0);
   const retrieveExperiences = async () => {
     const response = await axios.get(
       "https://spoonfull.joshua-m-baker.com/experiences",
@@ -38,22 +18,27 @@ export const LatestExperiencesCarousel = () => {
 
   const {
     data: latestExperiences,
-    error,
     isSuccess,
     isError,
-  } = useQuery("getExperiences", retrieveExperiences);
+  } = useQuery("getExperiences", retrieveExperiences, { retry: 2 });
+
+  const handleClick = useCallback(() => {
+    // open drawer
+  }, []);
 
   return (
-    <div className="carousel">
+    <div>
       <div className="recent-experiences">
         <h1>Recent experiences</h1>{" "}
-        <a href="/experiences">See all experiences</a>
-        <button>Add a new experience</button>
+        <a href="/experiences">See all experiences</a> |{" "}
+        <a onClick={handleClick}>Add a new experience</a>
       </div>
-      <div>
-        {latestExperiences?.map((experience) => (
-          <ExperienceCard experience={experience} />
-        ))}
+      <div className="carousel">
+        {latestExperiences
+          ?.slice(pageNum * 3, pageNum * 3 + 3)
+          .map((experience) => (
+            <ExperienceCard experience={experience} />
+          ))}
       </div>
     </div>
   );
