@@ -29,7 +29,7 @@ export const LoginPage = () => {
             <div>Sign in</div>
             <form>
                 <label>Username: <input name="username" value={username} onChange={handleOnChange}></input></label>
-                <label>Password: <input type="hidden" name="password" value={password} onChange={handleOnChange}></input></label>
+                <label>Password: <input type="password" name="password" value={password} onChange={handleOnChange}></input></label>
             </form>
         </div>
     )
