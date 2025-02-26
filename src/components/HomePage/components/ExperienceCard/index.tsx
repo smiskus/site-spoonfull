@@ -1,9 +1,9 @@
 import { format } from "date-fns";
-import type { Experience } from "src/types";
+import type { Experience } from "../../../../queries/get-experiences/types";
 import "./experienceCard.scss";
 
 export const ExperienceCard = ({ experience }: { experience: Experience }) => {
-  const { restaurantName, date, rating, reviews, experienceId } = experience;
+  const { restaurantName, date, reviews, experienceId } = experience;
   const formattedDate = format(new Date(date), "MMM i, yyyy");
 
   // TODO: Pull from profile name

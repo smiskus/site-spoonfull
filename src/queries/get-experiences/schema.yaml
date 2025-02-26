@@ -1,0 +1,85 @@
+openapi: 3.0.1
+info:
+  title: Spoonfull
+  description: Rest API for Spoonfull website
+  version: "0.0"
+servers:
+  - url: https://spoonfull.joshua-m-baker.com
+paths:
+  /experiences:
+    get:
+      operationId: getExperiences
+      responses:
+        "200":
+          description: getExperiences 200 response
+          content:
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Experience"
+components:
+  schemas:
+    Dish:
+      required:
+        - dishName
+      type: object
+      properties:
+        dishName:
+          type: string
+        dishDescription:
+          type: string
+          nullable: true
+        imageUrl:
+          type: string
+          nullable: true
+        rating:
+          type: string
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+    Experience:
+      required:
+        - date
+        - experienceId
+        - restaurantId
+        - restaurantName
+        - reviews
+      type: object
+      properties:
+        experienceId:
+          type: string
+        date:
+          type: string
+          format: date
+        restaurantName:
+          type: string
+        restaurantId:
+          type: string
+        reviews:
+          type: array
+          items:
+            $ref: "#/components/schemas/Review"
+    Review:
+      required:
+        - dishes
+        - personId
+        - personName
+        - rating
+      type: object
+      properties:
+        personName:
+          type: string
+        personId:
+          type: string
+        rating:
+          type: integer
+          format: int32
+        dishes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dish"
+        notes:
+          type: string
+          nullable: true

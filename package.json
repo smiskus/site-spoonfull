@@ -6,8 +6,9 @@
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
+    "regenerate-types": "node src/scripts/regenerate-types.mjs",
     "start": "react-router-serve ./build/server/index.js",
-    "typecheck": "react-router typegen && tsc"
+    "typecheck": "react-router typegen && tsc" 
   },
   "dependencies": {
     "@react-router/node": "^7.2.0",
@@ -27,7 +28,8 @@
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.1",
     "react-router-devtools": "^1.1.0",
-    "typescript": "^5.7.2",
+    "swagger-typescript-api": "^13.0.23",
+    "typescript": "^5.7.3",
     "vite": "^5.4.11",
     "vite-tsconfig-paths": "^5.1.4"
   }

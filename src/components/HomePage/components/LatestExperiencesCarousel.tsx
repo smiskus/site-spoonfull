@@ -1,26 +1,10 @@
-import type { Experience } from "src/types";
 import { ExperienceCard } from "./ExperienceCard";
-import axios from "axios";
-import { useQuery } from "react-query";
 import { useCallback, useState } from "react";
+import { getExperiences } from "src/queries/get-experiences";
 
 export const LatestExperiencesCarousel = () => {
   const [pageNum, setPageNum] = useState(0);
-  const retrieveExperiences = async () => {
-    const response = await axios.get(
-      "https://spoonfull.joshua-m-baker.com/experiences",
-      {
-        withCredentials: false,
-      }
-    );
-    return response.data as Experience[];
-  };
-
-  const {
-    data: latestExperiences,
-    isSuccess,
-    isError,
-  } = useQuery("getExperiences", retrieveExperiences, { retry: 2 });
+  const { data: latestExperiences } = getExperiences();
 
   const handleClick = useCallback(() => {
     // open drawer
