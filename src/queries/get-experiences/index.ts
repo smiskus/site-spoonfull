@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useQuery } from "react-query";
-import type { Experience } from "./types";
+import type { Experience } from "./../types";
 
 export const getExperiences = () => {
   const retrieveExperiences = async () => {
     const response = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}/experiences`,
+      `${import.meta.env.VITE_BASE_URL}/experiences`,
       {
         withCredentials: false,
       }
@@ -13,5 +13,11 @@ export const getExperiences = () => {
     return response.data as Experience[];
   };
 
-  return useQuery("getExperiences", retrieveExperiences, { retry: 2 });
+  const { data, isSuccess, isError } = useQuery(
+    "getExperiences",
+    retrieveExperiences,
+    { retry: 2 }
+  );
+
+  return { data, isSuccess, isError };
 };

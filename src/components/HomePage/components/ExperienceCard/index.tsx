@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import type { Experience } from "../../../../queries/get-experiences/types";
+import type { Experience } from "../../../../queries/types";
 import "./experienceCard.scss";
 
 export const ExperienceCard = ({ experience }: { experience: Experience }) => {

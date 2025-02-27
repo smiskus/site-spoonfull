@@ -3,7 +3,6 @@ import { useCallback, useState } from "react";
 import { getExperiences } from "src/queries/get-experiences";
 
 export const LatestExperiencesCarousel = () => {
-  const [pageNum, setPageNum] = useState(0);
   const { data: latestExperiences } = getExperiences();
 
   const handleClick = useCallback(() => {
@@ -14,15 +13,21 @@ export const LatestExperiencesCarousel = () => {
     <div>
       <div className="recent-experiences">
         <h1>Recent experiences</h1>{" "}
-        <a href="/experiences">See all experiences</a> |{" "}
-        <a onClick={handleClick}>Add a new experience</a>
+        <div>
+          <a onClick={handleClick}>Add a new experience</a>
+        </div>
+        <form>
+          <label>Search for an experience: </label>
+          <input type="text" />
+        </form>
       </div>
       <div className="carousel">
-        {latestExperiences
-          ?.slice(pageNum * 3, pageNum * 3 + 3)
-          .map((experience) => (
-            <ExperienceCard experience={experience} />
-          ))}
+        {latestExperiences?.map((experience) => (
+          <ExperienceCard
+            experience={experience}
+            key={experience.experienceId}
+          />
+        ))}
       </div>
     </div>
   );
