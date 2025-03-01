@@ -33,7 +33,7 @@ export const SignIn = ({ handleCreateAccount }: SignInProps) => {
           <button type="submit">Sign in</button>
         </div>
       </form>
-      <h2>or sign up</h2>
+      <div style={{marginTop: '5px'}}>Or sign up</div>
       <button onClick={handleCreateAccount}>Create an account</button>
     </>
   );

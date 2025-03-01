@@ -13,11 +13,16 @@ button {
   width: 375px;
   padding: 10px;
   border-radius: 5px;
-  border-color: none;
+  border-style: solid;
+  border-color: #243028;
   margin: 4px 0px;
   font-size: medium;
   background-color: #60815a;
   color: white;
+}
+
+button:hover {
+  cursor: pointer;
 }
 
 .login-page {

@@ -12,14 +12,14 @@ export const LoginPage = () => {
 
   const handleChangeView = useCallback(() => {
     setIsSignInPage(!isSignInPage);
-  }, []);
+  }, [isSignInPage, setIsSignInPage]);
 
   return (
     <div className="login-page">
       {isSignInPage ? (
         <SignIn handleCreateAccount={handleChangeView} />
       ) : (
-        <SignUp handleSignIn={handleChangeView}/>
+        <SignUp handleSignIn={handleChangeView} />
       )}
     </div>
   );

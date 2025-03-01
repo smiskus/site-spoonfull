@@ -12,7 +12,9 @@ export const SignUp = ({ handleSignIn }: SignInProps) => {
   return (
     <>
       <h2>Create account</h2>
-      <div>Keep track of all the delectable dishes you've tasted.</div>
+      <div>
+        <i>Keep track of all the delectable dishes you've tasted.</i>
+      </div>
       <form onSubmit={handleSubmit} style={{ margin: "5px 0px" }}>
         <div>
           <input name="username" placeholder="Username" required></input>
@@ -40,6 +42,13 @@ export const SignUp = ({ handleSignIn }: SignInProps) => {
           <button type="submit">Create account</button>
         </div>
       </form>
+      <div>
+        <div>Already have an account?</div>
+
+        <button className="sign=in-button" onClick={handleSignIn}>
+          Sign in here
+        </button>
+      </div>
     </>
   );
 };
