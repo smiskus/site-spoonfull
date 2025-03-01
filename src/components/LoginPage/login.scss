@@ -1,0 +1,36 @@
+.divider {
+  display: flex;
+}
+
+input {
+  padding: 10px;
+  width: 350px;
+  margin: 4px 0px;
+  font-size: medium;
+}
+
+button {
+  width: 375px;
+  padding: 10px;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: #243028;
+  margin: 4px 0px;
+  font-size: medium;
+  background-color: #60815a;
+  color: white;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.login-page {
+  margin: 0 15%;
+}
+
+h2 {
+  margin-top: 5px;
+  font-weight: 400;
+  font-size: larger;
+}
