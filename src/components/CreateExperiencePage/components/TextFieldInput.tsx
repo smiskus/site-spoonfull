@@ -1,8 +1,10 @@
 interface TextFieldInputProps {
+  value?: string;
   inputName: string;
   labelName: string;
   isRequired?: boolean;
-  onChange?: () => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
 }
 
@@ -11,19 +13,22 @@ export const TextFieldInput = ({
   inputName,
   labelName,
   isRequired,
+  value,
   onChange,
 }: TextFieldInputProps) => {
   return (
     <div>
-      <label>
-        {labelName}{" "}
-        <input
-          name={inputName}
-          required={isRequired}
-          onChange={onChange}
-          placeholder={placeholder}
-        ></input>
-      </label>
+      <div>
+        <label>{labelName}</label>
+      </div>
+      <input
+        name={inputName}
+        required={isRequired}
+        onChange={onChange}
+        onBlur={onChange}
+        placeholder={placeholder}
+        value={value}
+      />
     </div>
   );
 };

@@ -3,17 +3,12 @@ interface RestaurantFormProps {
 }
 
 export const RestaurantForm = ({ hasBeen }: RestaurantFormProps) => {
-
-    // Need to make an API call to get all restaurants to choose from
+  // Need to make an API call to get all restaurants to choose from
 
   return (
     <div>
       {hasBeen ? (
-        <>
-          <label>
-            <input></input>
-          </label>
-        </>
+        <>Search for the restaurant:</>
       ) : (
         <div>
           <input></input>
