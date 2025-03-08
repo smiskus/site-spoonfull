@@ -1,9 +1,9 @@
 import { useCallback } from "react";
-import type { NewDish } from "../types";
 import { TextFieldInput } from "./TextFieldInput";
+import type { Dish } from "src/queries/types";
 
 interface DishFormProps {
-  dish: NewDish;
+  dish: Dish;
   index: number;
   updateDish: (index: number, value: string | number, type: string) => void;
 }
@@ -28,26 +28,32 @@ export const DishForm = ({ dish, index, updateDish }: DishFormProps) => {
       {index > 0 ? <hr /> : null}
       <h4>{heading}</h4>
       <TextFieldInput
-        inputName="name"
+        inputName="dishName"
         labelName="Dish name:"
-        value={dish.name}
+        value={dish.dishName}
         onChange={handleChange}
       />
       <TextFieldInput
-        inputName="description"
+        inputName="dishDescription"
         labelName="Dish description:"
         placeholder="What was in the dish?"
-        value={dish.description}
+        value={dish.dishDescription ?? ""}
         onChange={handleChange}
       />
       <label>
-        Rating: <input type="number"></input>
+        Rating:{" "}
+        <input
+          name="rating"
+          type="number"
+          value={dish.rating ?? 0}
+          onChange={handleChange}
+        ></input>
       </label>
       <TextFieldInput
         inputName="notes"
         labelName="Other notes:"
         placeholder="What did you like or dislike about it?"
-        value={dish.notes}
+        value={dish.notes ?? ""}
         onChange={handleChange}
       />
       <div>

@@ -2,82 +2,99 @@ import { useCallback, useState } from "react";
 import "./create-experience.scss";
 import { RestaurantForm } from "./components/RestaurantForm";
 import { DishForm } from "./components/DishForm";
-import type { NewDish, NewExperience } from "./types";
 import { TextFieldInput } from "./components/TextFieldInput";
+import type { Dish, Experience, Review } from "src/queries/types";
+import { createExperience } from "src/queries/create-experience";
+import { useMutation } from "react-query";
 
-const defaultExperience: NewExperience = {
-  date: new Date().toString(),
-  notes: "",
+const defaultDish: Dish = {
+  dishName: "",
+  dishDescription: "",
   rating: 0,
-  restaurantId: "",
-  newRestaurant: {},
-  dishes: [
-    {
-      name: "",
-      description: "",
-      rating: 0,
-      notes: "",
-    },
-  ],
+  notes: "",
 };
 
 export const CreateExperiencePage = () => {
   const [hasBeen, setHasBeen] = useState<boolean | undefined>(undefined);
-  const [newExperience, setNewExperience] = useState(defaultExperience);
+  const [date, setDate] = useState("");
+  const [restaurantName, setRestaurantName] = useState("");
+  const [review, setReview] = useState<Review>({
+    personName: "Sara",
+    personId: "1",
+    rating: 0,
+    dishes: [],
+  });
+  const [dishes, setDishes] = useState([defaultDish]);
+  const { mutate } = useMutation(createExperience);
 
   const handleSubmit = useCallback(() => {
-    console.log(newExperience);
-  }, [newExperience]);
-
-  const handleAddDish = useCallback(() => {
-    const updatedExperience = {
-      ...newExperience,
-      dishes: [
-        ...newExperience.dishes,
+    const newExperience = {
+      date,
+      // Temporary this field will be unrequired
+      rating: 5,
+      // Temporary this field will be unrequired
+      restaurantId: "b01cddf3-728f-4623-9ca2-e1b9faed0191",
+      restaurantName,
+      reviews: [
         {
-          name: "",
-          description: "",
-          rating: 0,
-          notes: "",
+          ...review,
+          dishes,
         },
       ],
-    } as NewExperience;
+    } as Experience;
+    mutate(newExperience);
+  }, [date, restaurantName, review, dishes]);
 
-    setNewExperience(updatedExperience);
-  }, [newExperience]);
+  const handleAddDish = useCallback(() => {
+    const updatedDishes = [...dishes, defaultDish] as Dish[];
+    setDishes(updatedDishes);
+  }, [dishes]);
 
-  const handleTextFieldChange = useCallback(
+  const handleRestaurantNameChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      const newValue = e.target.value;
+      setRestaurantName(newValue);
+    },
+    [setRestaurantName]
+  );
+
+  const handleDateChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      setDate(e.target.value);
+    },
+    [setDate]
+  );
+
+  const handleReviewFieldChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       e.preventDefault();
       const textType = e.target.name;
       const newValue = e.target.value;
-      const updatedExperience = {
-        ...newExperience,
+      const updatedReview = {
+        ...review,
         [textType]: newValue,
       };
-      setNewExperience(updatedExperience);
+      setReview(updatedReview);
     },
-    [newExperience]
+    [review]
   );
 
   const handleDishChange = useCallback(
     (index: number, value: string | number, type: string) => {
-      const currentDish = newExperience.dishes[index];
+      const currentDish = dishes[index];
       const newValue = type === "rating" ? Number(value) : value;
       const newDish = {
         ...currentDish,
         [type]: newValue,
       };
 
-      const updatedExperienceDishes = [...newExperience.dishes];
-      updatedExperienceDishes.splice(index, 1, newDish);
-      const updatedExperience = {
-        ...newExperience,
-        dishes: updatedExperienceDishes,
-      };
-      setNewExperience(updatedExperience);
+      const updatedDishes = [...dishes];
+      updatedDishes.splice(index, 1, newDish);
+      setDishes(updatedDishes);
     },
-    [newExperience]
+    [dishes]
   );
 
   const handleVisitedChange = useCallback(() => {
@@ -90,7 +107,8 @@ export const CreateExperiencePage = () => {
       <div className="restaurant-section">
         <div>
           <label>
-            When did you go? <input type="date" />
+            When did you go?{" "}
+            <input type="date" value={date} onChange={handleDateChange} />
           </label>
         </div>
         <div>
@@ -99,7 +117,13 @@ export const CreateExperiencePage = () => {
             <input type="checkbox" onChange={handleVisitedChange} />
           </label>
         </div>
-        {hasBeen !== undefined ? <RestaurantForm hasBeen={hasBeen} /> : null}
+        {hasBeen !== undefined ? (
+          <RestaurantForm
+            hasBeen={hasBeen}
+            restaurantName={restaurantName}
+            handleName={handleRestaurantNameChange}
+          />
+        ) : null}
         <div>
           <label>
             What is your overall rating?
@@ -108,16 +132,16 @@ export const CreateExperiencePage = () => {
         </div>
         <TextFieldInput
           inputName="notes"
-          value={newExperience.notes}
+          value={review.notes ?? ""}
           labelName="Any other notes?"
-          onChange={handleTextFieldChange}
+          onChange={handleReviewFieldChange}
         />
       </div>
       <div className="dish-section">
         <div>
           <h3>What did you eat?</h3>
         </div>
-        {newExperience?.dishes?.map((dish, index) => (
+        {dishes?.map((dish, index) => (
           <DishForm
             key={index}
             dish={dish}
