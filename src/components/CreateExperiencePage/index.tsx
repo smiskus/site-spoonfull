@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import "./create-experience.scss";
 import { RestaurantForm } from "./components/RestaurantForm";
 import { DishForm } from "./components/DishForm";
-import { TextFieldInput } from "./components/TextFieldInput";
+import { FieldInput } from "./components/FieldInput";
 import type { Dish, Experience, Review } from "src/queries/types";
 import { createExperience } from "src/queries/create-experience";
 import { useMutation } from "react-query";
@@ -15,7 +15,7 @@ const defaultDish: Dish = {
 };
 
 export const CreateExperiencePage = () => {
-  const [hasBeen, setHasBeen] = useState<boolean | undefined>(undefined);
+  const [hasBeen, setHasBeen] = useState<boolean>(false);
   const [date, setDate] = useState("");
   const [restaurantName, setRestaurantName] = useState("");
   const [review, setReview] = useState<Review>({
@@ -97,66 +97,83 @@ export const CreateExperiencePage = () => {
     [dishes]
   );
 
+  const handleRemoveDish = useCallback(
+    (index: number) => {
+      const updatedDishes = [...dishes];
+      updatedDishes.splice(index, 1);
+      setDishes(updatedDishes);
+    },
+    [dishes]
+  );
+
   const handleVisitedChange = useCallback(() => {
     setHasBeen(!hasBeen);
   }, [hasBeen]);
 
   return (
-    <div>
+    <div className="add-experience-container">
       <h2>Add an experience</h2>
-      <div className="restaurant-section">
+      <div className="form-section">
+        <FieldInput
+          inputName="date"
+          value={date}
+          labelName="When did you go?"
+          inputType="date"
+          onChange={handleDateChange}
+        />
         <div>
-          <label>
-            When did you go?{" "}
-            <input type="date" value={date} onChange={handleDateChange} />
-          </label>
-        </div>
-        <div>
+          <div></div>
           <label>
             Have you been to this restaurant before?
             <input type="checkbox" onChange={handleVisitedChange} />
           </label>
         </div>
-        {hasBeen !== undefined ? (
-          <RestaurantForm
-            hasBeen={hasBeen}
-            restaurantName={restaurantName}
-            handleName={handleRestaurantNameChange}
-          />
-        ) : null}
-        <div>
-          <label>
-            What is your overall rating?
-            <input type="number" />
-          </label>
-        </div>
-        <TextFieldInput
+        <RestaurantForm
+          hasBeen={hasBeen}
+          restaurantName={restaurantName}
+          handleName={handleRestaurantNameChange}
+        />
+        <FieldInput
+          inputName="rating"
+          value={review.rating}
+          labelName="What is your overall rating?"
+          inputType="number"
+          onChange={handleReviewFieldChange}
+        />
+        <FieldInput
           inputName="notes"
           value={review.notes ?? ""}
           labelName="Any other notes?"
+          placeholder="Service? Atmosphere? Vibes?"
           onChange={handleReviewFieldChange}
         />
       </div>
-      <div className="dish-section">
+      <div className="form-section">
         <div>
-          <h3>What did you eat?</h3>
+          <div>
+            <h3>What did you eat?</h3>
+          </div>
+          {dishes?.map((dish, index) => (
+            <DishForm
+              key={index}
+              dish={dish}
+              index={index}
+              updateDish={handleDishChange}
+              removeDish={handleRemoveDish}
+            />
+          ))}
+          <div>
+            <button className="add-button" onClick={handleAddDish}>
+              Add a dish
+            </button>
+          </div>
         </div>
-        {dishes?.map((dish, index) => (
-          <DishForm
-            key={index}
-            dish={dish}
-            index={index}
-            updateDish={handleDishChange}
-          />
-        ))}
         <div>
-          <button onClick={handleAddDish}>Add a dish</button>
+          <hr />
+          <button type="submit" className="add-button" onClick={handleSubmit}>
+            Add experience
+          </button>
         </div>
-      </div>
-      <div>
-        <button type="submit" onClick={handleSubmit}>
-          Add experience
-        </button>
       </div>
     </div>
   );

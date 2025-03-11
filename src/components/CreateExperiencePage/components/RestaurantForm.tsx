@@ -1,4 +1,4 @@
-import { TextFieldInput } from "./TextFieldInput";
+import { FieldInput } from "./FieldInput";
 
 interface RestaurantFormProps {
   hasBeen: boolean;
@@ -19,7 +19,7 @@ export const RestaurantForm = ({
         <>Search for the restaurant:</>
       ) : (
         <div>
-          <TextFieldInput
+          <FieldInput
             inputName="restaurantName"
             labelName="Restaurant"
             placeholder="Enter restaurant name"

@@ -1,5 +1,6 @@
-interface TextFieldInputProps {
-  value?: string;
+interface FieldInputProps {
+  value?: string | number;
+  inputType?: string;
   inputName: string;
   labelName: string;
   isRequired?: boolean;
@@ -8,20 +9,22 @@ interface TextFieldInputProps {
   placeholder?: string;
 }
 
-export const TextFieldInput = ({
+export const FieldInput = ({
+  inputType = "text",
   placeholder,
   inputName,
   labelName,
   isRequired,
   value,
   onChange,
-}: TextFieldInputProps) => {
+}: FieldInputProps) => {
   return (
     <div>
       <div>
         <label>{labelName}</label>
       </div>
       <input
+        type={inputType}
         name={inputName}
         required={isRequired}
         onChange={onChange}

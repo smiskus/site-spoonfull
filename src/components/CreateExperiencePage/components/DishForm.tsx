@@ -1,14 +1,21 @@
 import { useCallback } from "react";
-import { TextFieldInput } from "./TextFieldInput";
+import { FieldInput } from "./FieldInput";
 import type { Dish } from "src/queries/types";
+import { TrashIcon } from "../svg/TrashIcon";
 
 interface DishFormProps {
   dish: Dish;
   index: number;
   updateDish: (index: number, value: string | number, type: string) => void;
+  removeDish: (index: number) => void;
 }
 
-export const DishForm = ({ dish, index, updateDish }: DishFormProps) => {
+export const DishForm = ({
+  dish,
+  index,
+  removeDish,
+  updateDish,
+}: DishFormProps) => {
   // TODO: Upload picture feature
 
   const handleChange = useCallback(
@@ -21,19 +28,33 @@ export const DishForm = ({ dish, index, updateDish }: DishFormProps) => {
     [updateDish, index]
   );
 
+  const handleDeleteDish = useCallback(() => {
+    removeDish(index);
+  }, [removeDish, index]);
+
   const heading = `Dish #${index + 1}`;
 
   return (
     <div>
       {index > 0 ? <hr /> : null}
-      <h4>{heading}</h4>
-      <TextFieldInput
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <h4>{heading}</h4>
+        <button
+          className="delete-button"
+          onClick={handleDeleteDish}
+          aria-label={`Delete ${heading}`}
+        >
+          <TrashIcon />
+        </button>
+      </div>
+      <FieldInput
         inputName="dishName"
         labelName="Dish name:"
+        placeholder="As written on the menu"
         value={dish.dishName}
         onChange={handleChange}
       />
-      <TextFieldInput
+      <FieldInput
         inputName="dishDescription"
         labelName="Dish description:"
         placeholder="What was in the dish?"
@@ -49,7 +70,7 @@ export const DishForm = ({ dish, index, updateDish }: DishFormProps) => {
           onChange={handleChange}
         ></input>
       </label>
-      <TextFieldInput
+      <FieldInput
         inputName="notes"
         labelName="Other notes:"
         placeholder="What did you like or dislike about it?"
