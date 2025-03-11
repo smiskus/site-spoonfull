@@ -20,7 +20,7 @@ export interface Dish {
 
 export interface Experience {
   /** @format uuid */
-  id?: string;
+  id: string;
   /** @format date */
   date: string;
   restaurantName: string;
@@ -28,7 +28,7 @@ export interface Experience {
   restaurantId: string;
   reviews: Review[];
   /** @format int32 */
-  rating?: number;
+  rating: number;
 }
 
 export interface Review {

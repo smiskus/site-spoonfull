@@ -3,7 +3,7 @@ import type { Experience } from "../../../../queries/types";
 import "./experienceCard.scss";
 
 export const ExperienceCard = ({ experience }: { experience: Experience }) => {
-  const { restaurantName, date, reviews, experienceId } = experience;
+  const { restaurantName, date, reviews, id } = experience;
   const formattedDate = format(new Date(date), "MMM i, yyyy");
 
   // TODO: Pull from profile name
@@ -18,7 +18,7 @@ export const ExperienceCard = ({ experience }: { experience: Experience }) => {
     []
   );
 
-  const experienceLink = `/experience/${experienceId}`;
+  const experienceLink = `/experience/${id}`;
 
   return (
     <div className="card">

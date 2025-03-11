@@ -23,5 +23,5 @@ const runCommand = (command) => {
 };
 
 runCommand(
-  "npx swagger-typescript-api --path https://spoonfull.joshua-m-baker.com/swagger/spoonfull-0.0.yml --output src/queries/get-experiences -n types.d.ts"
+  "npx swagger-typescript-api --path https://spoonfull.joshua-m-baker.com/swagger/spoonfull-0.0.yml --output src/queries -n types.d.ts"
 );
