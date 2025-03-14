@@ -1,23 +1,28 @@
 import { useCallback, useState } from "react";
 import "./create-experience.scss";
-import { RestaurantForm } from "./components/RestaurantForm";
+import {
+  RestaurantForm,
+  type RestaurantOption,
+} from "./components/RestaurantForm";
 import { DishForm } from "./components/DishForm";
 import { FieldInput } from "./components/FieldInput";
-import type { Dish, Experience, Review } from "src/queries/types";
+import type { Dish, CreateExperience, Review } from "src/queries/types";
 import { createExperience } from "src/queries/create-experience";
 import { useMutation } from "react-query";
+import type { SingleValue } from "react-select";
 
 const defaultDish: Dish = {
-  dishName: "",
-  dishDescription: "",
+  name: "",
+  description: "",
   rating: 0,
   notes: "",
 };
 
 export const CreateExperiencePage = () => {
-  const [hasBeen, setHasBeen] = useState<boolean>(false);
   const [date, setDate] = useState("");
-  const [restaurantName, setRestaurantName] = useState("");
+  const [restaurant, setRestaurant] = useState<RestaurantOption | undefined>(
+    undefined
+  );
   const [review, setReview] = useState<Review>({
     personName: "Sara",
     personId: "1",
@@ -30,33 +35,32 @@ export const CreateExperiencePage = () => {
   const handleSubmit = useCallback(() => {
     const newExperience = {
       date,
-      // Temporary this field will be unrequired
-      rating: 5,
-      // Temporary this field will be unrequired
-      restaurantId: "b01cddf3-728f-4623-9ca2-e1b9faed0191",
-      restaurantName,
+      restaurantId: restaurant?.value,
       reviews: [
         {
           ...review,
           dishes,
         },
       ],
-    } as Experience;
+    } as CreateExperience;
     mutate(newExperience);
-  }, [date, restaurantName, review, dishes]);
+  }, [date, restaurant, review, dishes]);
 
   const handleAddDish = useCallback(() => {
     const updatedDishes = [...dishes, defaultDish] as Dish[];
     setDishes(updatedDishes);
   }, [dishes]);
 
-  const handleRestaurantNameChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      e.preventDefault();
-      const newValue = e.target.value;
-      setRestaurantName(newValue);
+  const handleRestaurantChange = useCallback(
+    (newRestaurant: SingleValue<RestaurantOption>) => {
+      if (newRestaurant) {
+        setRestaurant({
+          value: newRestaurant.value,
+          label: newRestaurant.label,
+        });
+      }
     },
-    [setRestaurantName]
+    [setRestaurant]
   );
 
   const handleDateChange = useCallback(
@@ -106,10 +110,6 @@ export const CreateExperiencePage = () => {
     [dishes]
   );
 
-  const handleVisitedChange = useCallback(() => {
-    setHasBeen(!hasBeen);
-  }, [hasBeen]);
-
   return (
     <div className="add-experience-container">
       <h2>Add an experience</h2>
@@ -121,17 +121,9 @@ export const CreateExperiencePage = () => {
           inputType="date"
           onChange={handleDateChange}
         />
-        <div>
-          <div></div>
-          <label>
-            Have you been to this restaurant before?
-            <input type="checkbox" onChange={handleVisitedChange} />
-          </label>
-        </div>
         <RestaurantForm
-          hasBeen={hasBeen}
-          restaurantName={restaurantName}
-          handleName={handleRestaurantNameChange}
+          restaurant={restaurant}
+          setRestaurant={handleRestaurantChange}
         />
         <FieldInput
           inputName="rating"

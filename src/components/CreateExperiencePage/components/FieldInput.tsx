@@ -4,6 +4,7 @@ interface FieldInputProps {
   inputName: string;
   labelName: string;
   isRequired?: boolean;
+  list?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
@@ -16,6 +17,7 @@ export const FieldInput = ({
   labelName,
   isRequired,
   value,
+  list,
   onChange,
 }: FieldInputProps) => {
   return (
@@ -31,6 +33,7 @@ export const FieldInput = ({
         onBlur={onChange}
         placeholder={placeholder}
         value={value}
+        list={list}
       />
     </div>
   );

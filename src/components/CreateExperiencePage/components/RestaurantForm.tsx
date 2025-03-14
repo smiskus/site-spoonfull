@@ -1,33 +1,71 @@
-import { FieldInput } from "./FieldInput";
+import { useCallback, useState } from "react";
+import { useMutation } from "react-query";
+import type { SingleValue } from "react-select";
+import CreatableSelect from "react-select/creatable";
+import { createRestaurant } from "src/queries/create-restaurant";
+import { getRestaurants } from "src/queries/get-restaurants";
+import type { RestaurantResponse } from "src/queries/types";
+
+export interface RestaurantOption {
+  value: string;
+  label: string;
+}
 
 interface RestaurantFormProps {
-  hasBeen: boolean;
-  handleName: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  restaurantName: string;
+  restaurant?: RestaurantOption;
+  setRestaurant: (newRestaurant: SingleValue<RestaurantOption>) => void;
 }
 
 export const RestaurantForm = ({
-  hasBeen,
-  restaurantName,
-  handleName,
+  restaurant,
+  setRestaurant,
 }: RestaurantFormProps) => {
-  // Need to make an API call to get all restaurants to choose from
+  const [isLoading, setIsLoading] = useState(false);
+  const { data: restaurants } = getRestaurants();
+  const restaurantOptions =
+    restaurants?.map((restaurant) => ({
+      value: restaurant.id,
+      label: restaurant.name,
+    })) ?? [];
+
+  const { mutate } = useMutation(createRestaurant);
+
+  const handleSuccess = useCallback((data: RestaurantResponse) => {
+    setRestaurant({ value: data.id, label: data.name });
+    setIsLoading(false);
+  }, []);
+
+  const handleError = useCallback(() => {
+    setIsLoading(false);
+  }, []);
+
+  const handleAddNewRestaurant = useCallback(
+    async (newRestaurant: string) => {
+      setIsLoading(true);
+      mutate(
+        { name: newRestaurant },
+        {
+          onSuccess: handleSuccess,
+          onError: handleError,
+        }
+      );
+    },
+    [mutate, setIsLoading]
+  );
 
   return (
     <div>
-      {hasBeen ? (
-        <>Search for the restaurant:</>
-      ) : (
-        <div>
-          <FieldInput
-            inputName="restaurantName"
-            labelName="Restaurant"
-            placeholder="Enter restaurant name"
-            value={restaurantName}
-            onChange={handleName}
-          />
-        </div>
-      )}
+      <div>What restaurant did you dine at?</div>
+      <CreatableSelect
+        className="restaurant-select"
+        isClearable
+        options={restaurantOptions}
+        isDisabled={isLoading}
+        isLoading={isLoading}
+        onCreateOption={handleAddNewRestaurant}
+        value={restaurant}
+        onChange={setRestaurant}
+      />
     </div>
   );
 };
