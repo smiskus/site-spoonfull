@@ -1,9 +1,9 @@
 import axios from "axios";
-import type { Experience } from "./../types";
+import type { CreateExperience, ExperienceResponse } from "./../types";
 
-export const createExperience = async (postObject: Experience) => {
+export const createExperience = async (postObject: CreateExperience) => {
   const response = await axios.post(
-    ` https://spoonfull.joshua-m-baker.com/experiences`,
+    `${import.meta.env.VITE_BASE_URL}/experiences`,
     {
       ...postObject,
     },
@@ -11,5 +11,5 @@ export const createExperience = async (postObject: Experience) => {
       withCredentials: false,
     }
   );
-  return response.data as Experience[];
+  return response.data as ExperienceResponse[];
 };

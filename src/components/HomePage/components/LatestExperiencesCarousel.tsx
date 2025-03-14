@@ -1,5 +1,4 @@
 import { ExperienceCard } from "./ExperienceCard";
-import { useCallback } from "react";
 import { getExperiences } from "src/queries/get-experiences";
 
 export const LatestExperiencesCarousel = () => {

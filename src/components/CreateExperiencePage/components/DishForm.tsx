@@ -48,17 +48,17 @@ export const DishForm = ({
         </button>
       </div>
       <FieldInput
-        inputName="dishName"
+        inputName="name"
         labelName="Dish name:"
         placeholder="As written on the menu"
-        value={dish.dishName}
+        value={dish.name}
         onChange={handleChange}
       />
       <FieldInput
-        inputName="dishDescription"
+        inputName="description"
         labelName="Dish description:"
         placeholder="What was in the dish?"
-        value={dish.dishDescription ?? ""}
+        value={dish.description ?? ""}
         onChange={handleChange}
       />
       <label>

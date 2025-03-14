@@ -9,26 +9,42 @@
  * ---------------------------------------------------------------
  */
 
+export interface CreateExperience {
+  /** @format date */
+  date: string;
+  /** @format uuid */
+  restaurantId: string;
+  reviews: Review[];
+}
+
+export interface CreateRestaurant {
+  name: string;
+}
+
 export interface Dish {
-  dishName: string;
-  dishDescription?: string | null;
+  name: string;
+  description?: string | null;
   imageUrl?: string | null;
   /** @format int32 */
   rating?: number | null;
   notes?: string | null;
 }
 
-export interface Experience {
+export interface ExperienceResponse {
   /** @format uuid */
-  id?: string;
+  id: string;
   /** @format date */
   date: string;
   restaurantName: string;
   /** @format uuid */
   restaurantId: string;
   reviews: Review[];
-  /** @format int32 */
-  rating?: number;
+}
+
+export interface RestaurantResponse {
+  /** @format uuid */
+  id: string;
+  name: string;
 }
 
 export interface Review {
@@ -266,9 +282,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/experiences
      */
     getExperiences: (params: RequestParams = {}) =>
-      this.request<Experience[], any>({
+      this.request<ExperienceResponse[], any>({
         path: `/experiences`,
         method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -278,8 +295,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name CreateExperience
      * @request POST:/experiences
      */
-    createExperience: (data: Experience, params: RequestParams = {}) =>
-      this.request<Experience, any>({
+    createExperience: (data: CreateExperience, params: RequestParams = {}) =>
+      this.request<ExperienceResponse, any>({
         path: `/experiences`,
         method: "POST",
         body: data,
@@ -295,8 +312,53 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/experiences/{id}
      */
     getExperience: (id: string, params: RequestParams = {}) =>
-      this.request<Experience, any>({
+      this.request<ExperienceResponse, any>({
         path: `/experiences/${id}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+  };
+  restaurants = {
+    /**
+     * No description
+     *
+     * @name GetRestaurants
+     * @request GET:/restaurants
+     */
+    getRestaurants: (params: RequestParams = {}) =>
+      this.request<RestaurantResponse[], any>({
+        path: `/restaurants`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name CreateRestaurant
+     * @request POST:/restaurants
+     */
+    createRestaurant: (data: CreateRestaurant, params: RequestParams = {}) =>
+      this.request<RestaurantResponse, any>({
+        path: `/restaurants`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name GetRestaurant
+     * @request GET:/restaurants/{id}
+     */
+    getRestaurant: (id: string, params: RequestParams = {}) =>
+      this.request<RestaurantResponse, any>({
+        path: `/restaurants/${id}`,
         method: "GET",
         format: "json",
         ...params,
