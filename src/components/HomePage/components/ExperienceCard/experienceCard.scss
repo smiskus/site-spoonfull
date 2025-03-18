@@ -3,15 +3,28 @@
   justify-content: center;
   align-content: space-between;
   text-align: center;
-  padding: 5px;
+  padding: 10px;
   height: 250px;
   width: 250px;
   margin: 12px;
+  border-radius: 5px;
 }
 
-.details-link {
-  margin-top: 10px;
-  background-color: #adc2a7;
-  padding: 8px;
-  text-align: center;
+.details {
+  text-align: left;
+  height: 90px;
+}
+
+h2 {
+  font-size: larger;
+}
+
+.heading {
+  height: 90px;
+  align-content: center;
+}
+
+a:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }

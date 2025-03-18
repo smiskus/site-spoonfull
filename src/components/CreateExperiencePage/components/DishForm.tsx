@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { FieldInput } from "./FieldInput";
 import type { Dish } from "src/queries/types";
-import { TrashIcon } from "../svg/TrashIcon";
+import { TrashIcon } from "../../../svg/TrashIcon";
 
 interface DishFormProps {
   dish: Dish;
