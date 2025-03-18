@@ -8,13 +8,13 @@ export const LatestExperiencesCarousel = () => {
     <div>
       <div className="recent-experiences">
         <h1>Recent experiences</h1>{" "}
+        <form>
+          <label>Find an experience: </label>
+          <input type="text" className="search" />
+        </form>
         <div>
           <a href="/experience/create">Add a new experience</a>
         </div>
-        <form>
-          <label>Search for an experience: </label>
-          <input type="text" />
-        </form>
       </div>
       <div className="carousel">
         {latestExperiences?.map((experience) => (
