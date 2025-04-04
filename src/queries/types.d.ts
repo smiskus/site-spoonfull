@@ -56,6 +56,10 @@ export interface Review {
   notes?: string | null;
 }
 
+export interface UpdateRestaurant {
+  name: string;
+}
+
 export type QueryParamsType = Record<string | number, any>;
 export type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;
 
@@ -274,16 +278,16 @@ export class HttpClient<SecurityDataType = unknown> {
  * Rest API for Spoonfull website
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
-  experiences = {
+  api = {
     /**
      * No description
      *
      * @name GetExperiences
-     * @request GET:/experiences
+     * @request GET:/api/experiences
      */
     getExperiences: (params: RequestParams = {}) =>
       this.request<ExperienceResponse[], any>({
-        path: `/experiences`,
+        path: `/api/experiences`,
         method: "GET",
         format: "json",
         ...params,
@@ -293,11 +297,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @name CreateExperience
-     * @request POST:/experiences
+     * @request POST:/api/experiences
      */
     createExperience: (data: CreateExperience, params: RequestParams = {}) =>
       this.request<ExperienceResponse, any>({
-        path: `/experiences`,
+        path: `/api/experiences`,
         method: "POST",
         body: data,
         type: ContentType.Json,
@@ -309,26 +313,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @name GetExperience
-     * @request GET:/experiences/{id}
+     * @request GET:/api/experiences/{id}
      */
     getExperience: (id: string, params: RequestParams = {}) =>
       this.request<ExperienceResponse, any>({
-        path: `/experiences/${id}`,
+        path: `/api/experiences/${id}`,
         method: "GET",
         format: "json",
         ...params,
       }),
-  };
-  restaurants = {
+
     /**
      * No description
      *
      * @name GetRestaurants
-     * @request GET:/restaurants
+     * @request GET:/api/restaurants
      */
     getRestaurants: (params: RequestParams = {}) =>
       this.request<RestaurantResponse[], any>({
-        path: `/restaurants`,
+        path: `/api/restaurants`,
         method: "GET",
         format: "json",
         ...params,
@@ -338,11 +341,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @name CreateRestaurant
-     * @request POST:/restaurants
+     * @request POST:/api/restaurants
      */
     createRestaurant: (data: CreateRestaurant, params: RequestParams = {}) =>
       this.request<RestaurantResponse, any>({
-        path: `/restaurants`,
+        path: `/api/restaurants`,
         method: "POST",
         body: data,
         type: ContentType.Json,
@@ -354,12 +357,41 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @name GetRestaurant
-     * @request GET:/restaurants/{id}
+     * @request GET:/api/restaurants/{id}
      */
     getRestaurant: (id: string, params: RequestParams = {}) =>
       this.request<RestaurantResponse, any>({
-        path: `/restaurants/${id}`,
+        path: `/api/restaurants/${id}`,
         method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name DeleteRestaurant
+     * @request DELETE:/api/restaurants/{id}
+     */
+    deleteRestaurant: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/api/restaurants/${id}`,
+        method: "DELETE",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @name UpdateRestaurant
+     * @request PATCH:/api/restaurants/{id}
+     */
+    updateRestaurant: (id: string, data: UpdateRestaurant, params: RequestParams = {}) =>
+      this.request<RestaurantResponse, any>({
+        path: `/api/restaurants/${id}`,
+        method: "PATCH",
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),

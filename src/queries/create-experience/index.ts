@@ -11,5 +11,5 @@ export const createExperience = async (postObject: CreateExperience) => {
       withCredentials: false,
     }
   );
-  return response.data as ExperienceResponse[];
+  return response.data as ExperienceResponse;
 };

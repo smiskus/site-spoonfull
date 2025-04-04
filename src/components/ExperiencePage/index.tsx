@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { useParams } from "react-router";
 import "./experiencePage.scss";
 import { getExperience } from "src/queries/get-experience";
@@ -9,7 +9,8 @@ export const ExperiencePage = () => {
   const { data: experience } = getExperience(experienceId ?? "");
 
   const { date, restaurantName, reviews } = experience ?? {};
-  const formattedDate = date ? format(new Date(date), "MMM i, yyyy") : '';
+  const parsedDate = parseISO(date ?? "");
+  const formattedDate = date ? format(parsedDate, "MMM dd, yyyy") : "";
 
   return (
     <div className="experience-container">

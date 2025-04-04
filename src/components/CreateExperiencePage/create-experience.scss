@@ -1,4 +1,4 @@
-.add-button {
+.green-button {
   width: 100%;
   padding: 10px;
   border-radius: 5px;
@@ -8,6 +8,10 @@
   font-size: medium;
   background-color: #60815a;
   color: white;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 .delete-button {

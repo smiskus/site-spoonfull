@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import type { ExperienceResponse } from "../../../../queries/types";
 import "./experienceCard.scss";
 
@@ -8,7 +8,8 @@ export const ExperienceCard = ({
   experience: ExperienceResponse;
 }) => {
   const { restaurantName, date, reviews, id } = experience;
-  const formattedDate = format(new Date(date), "MMM i, yyyy");
+  const parsedDate = parseISO(date);
+  const formattedDate = format(parsedDate, "MMM dd, yyyy");
 
   // TODO: Pull from profile name
   const userReview = reviews[0];

@@ -6,7 +6,12 @@ import {
 } from "./components/RestaurantForm";
 import { DishForm } from "./components/DishForm";
 import { FieldInput } from "./components/FieldInput";
-import type { Dish, CreateExperience, Review } from "src/queries/types";
+import type {
+  Dish,
+  CreateExperience,
+  Review,
+  ExperienceResponse,
+} from "src/queries/types";
 import { createExperience } from "src/queries/create-experience";
 import { useMutation } from "react-query";
 import type { SingleValue } from "react-select";
@@ -18,19 +23,46 @@ const defaultDish: Dish = {
   notes: "",
 };
 
+const defaultReview: Review = {
+  personName: "Sara",
+  personId: "1",
+  rating: 0,
+  dishes: [],
+};
+
 export const CreateExperiencePage = () => {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
   const [date, setDate] = useState("");
   const [restaurant, setRestaurant] = useState<RestaurantOption | undefined>(
     undefined
   );
-  const [review, setReview] = useState<Review>({
-    personName: "Sara",
-    personId: "1",
-    rating: 0,
-    dishes: [],
-  });
+
+  // TODO: We'll need to pull personName and personId from profile once auth is setup
+
+  const [review, setReview] = useState<Review>(defaultReview);
   const [dishes, setDishes] = useState([defaultDish]);
   const { mutate } = useMutation(createExperience);
+
+  const handleSuccess = useCallback((data: ExperienceResponse) => {
+    // Reset all fields
+    setDate("");
+    setRestaurant(undefined);
+    setReview(defaultReview);
+    setDishes([defaultDish]);
+    setErrorMessage("");
+
+    setShowConfirmation(true);
+    setSuccessMessage(
+      `Your experience at ${data.restaurantName} has been added!`
+    );
+  }, []);
+
+  const handleError = useCallback(() => {
+    setErrorMessage("Sorry something went wrong, please try again!");
+  }, []);
 
   const handleSubmit = useCallback(() => {
     const newExperience = {
@@ -43,7 +75,7 @@ export const CreateExperiencePage = () => {
         },
       ],
     } as CreateExperience;
-    mutate(newExperience);
+    mutate(newExperience, { onSuccess: handleSuccess, onError: handleError });
   }, [date, restaurant, review, dishes]);
 
   const handleAddDish = useCallback(() => {
@@ -110,63 +142,94 @@ export const CreateExperiencePage = () => {
     [dishes]
   );
 
+  const handleAddAnotherExperience = useCallback(
+    () => setShowConfirmation(false),
+    []
+  );
+
   return (
     <div className="add-experience-container">
-      <h2>Add an experience</h2>
-      <div className="form-section">
-        <FieldInput
-          inputName="date"
-          value={date}
-          labelName="When did you go?"
-          inputType="date"
-          onChange={handleDateChange}
-        />
-        <RestaurantForm
-          restaurant={restaurant}
-          setRestaurant={handleRestaurantChange}
-        />
-        <FieldInput
-          inputName="rating"
-          value={review.rating}
-          labelName="What is your overall rating?"
-          inputType="number"
-          onChange={handleReviewFieldChange}
-        />
-        <FieldInput
-          inputName="notes"
-          value={review.notes ?? ""}
-          labelName="Any other notes?"
-          placeholder="Service? Atmosphere? Vibes?"
-          onChange={handleReviewFieldChange}
-        />
-      </div>
-      <div className="form-section">
-        <div>
+      {showConfirmation ? (
+        <div style={{ textAlign: "center" }}>
+          <h2>{successMessage}</h2>
+          <a href="/" style={{ fontSize: "larger" }}>
+            Return to home
+          </a>
+          <div>or</div>
           <div>
-            <h3>What did you eat?</h3>
-          </div>
-          {dishes?.map((dish, index) => (
-            <DishForm
-              key={index}
-              dish={dish}
-              index={index}
-              updateDish={handleDishChange}
-              removeDish={handleRemoveDish}
-            />
-          ))}
-          <div>
-            <button className="add-button" onClick={handleAddDish}>
-              Add a dish
+            <button
+              className="green-button"
+              style={{ width: "250px" }}
+              onClick={handleAddAnotherExperience}
+            >
+              Add another experience
             </button>
           </div>
         </div>
+      ) : (
         <div>
-          <hr />
-          <button type="submit" className="add-button" onClick={handleSubmit}>
-            Add experience
-          </button>
+          <h2>Add an experience</h2>
+          <div className="form-section">
+            <FieldInput
+              inputName="date"
+              value={date}
+              labelName="When did you go?"
+              inputType="date"
+              onChange={handleDateChange}
+            />
+            <RestaurantForm
+              restaurant={restaurant}
+              setRestaurant={handleRestaurantChange}
+            />
+            <FieldInput
+              inputName="rating"
+              value={review.rating}
+              labelName="What is your overall rating?"
+              inputType="number"
+              onChange={handleReviewFieldChange}
+            />
+            <FieldInput
+              inputName="notes"
+              value={review.notes ?? ""}
+              labelName="Any other notes?"
+              placeholder="Service? Atmosphere? Vibes?"
+              onChange={handleReviewFieldChange}
+            />
+          </div>
+          <div className="form-section">
+            <div>
+              <div>
+                <h3>What did you eat?</h3>
+              </div>
+              {dishes?.map((dish, index) => (
+                <DishForm
+                  key={index}
+                  dish={dish}
+                  index={index}
+                  updateDish={handleDishChange}
+                  removeDish={handleRemoveDish}
+                />
+              ))}
+              <div>
+                <button className="green-button" onClick={handleAddDish}>
+                  Add a dish
+                </button>
+              </div>
+            </div>
+            <div>
+              <hr />
+              {errorMessage ? <div color="red">{errorMessage}</div> : null}
+              <button
+                type="submit"
+                className="green-button"
+                onClick={handleSubmit}
+              >
+                Add experience
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
