@@ -1,5 +1,6 @@
 import "./homepage.scss";
 import { LatestExperiencesCarousel } from "./components/LatestExperiencesCarousel";
+import { BannerSummary } from "./components/BannerSummary";
 
 export const HomePage = () => {
   // Make profile call
@@ -8,6 +9,7 @@ export const HomePage = () => {
 
   return (
     <div className="home-container">
+      <BannerSummary />
       <LatestExperiencesCarousel />
     </div>
   );

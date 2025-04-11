@@ -9,7 +9,7 @@ export const LatestExperiencesCarousel = () => {
   return (
     <div>
       <div className="recent-experiences">
-        <h1>Recent experiences</h1>{" "}
+        <h2>Recent experiences</h2>{" "}
         <form>
           <input className="search" placeholder="Find an experience" />
           <button

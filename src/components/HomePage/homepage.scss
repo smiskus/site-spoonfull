@@ -17,6 +17,10 @@
   flex-direction: column;
   padding: 5px;
 
+  h2 {
+    font-size: xx-large;
+  }
+
   button {
     padding: 10px;
     font-size: medium;
@@ -51,4 +55,21 @@ button.search-button {
   padding: 8px;
   text-align: center;
   border-radius: 5px;
+}
+
+.banner {
+  display: flex;
+  width: 70%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 10px 0px;
+}
+
+.banner-tile {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  max-width: 120px;
+  padding: 10px;
 }

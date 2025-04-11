@@ -4,12 +4,10 @@ export const Header = () => {
   return (
     <div className="header-container">
       <div className="header">
-        <h1>
+        <h1 style={{ paddingLeft: "4px" }}>
           <a href="/">Spoonfull</a>
         </h1>
-        <div>Hello Sara</div>
       </div>
-      <hr />
     </div>
   );
 };
