@@ -1,5 +1,7 @@
 .home-container {
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 // TODO use container queries
@@ -59,7 +61,6 @@ button.search-button {
 
 .banner {
   display: flex;
-  width: 70%;
   flex-wrap: wrap;
   justify-content: space-between;
   margin: 10px 0px;

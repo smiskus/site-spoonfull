@@ -13,7 +13,7 @@ export const BannerTile = ({
 }: BannerTileProps) => (
   <div className="banner-tile">
     <a href={href}>
-      <img src={image} alt={imageAltText} />
+      <img src={image} alt={imageAltText} width={"40px"} />
       <div>{text}</div>
     </a>
   </div>

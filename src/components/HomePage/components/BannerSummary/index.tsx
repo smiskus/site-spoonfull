@@ -15,23 +15,23 @@ export const BannerSummary = () => {
       <div>What would you like to do?</div>
       <div className="banner">
         <BannerTile
-          image="https://www.vectorstock.com/royalty-free-vector/icon-black-noodle-vector-15375492"
-          href="/"
+          image="../../../../../public/assets/add.png"
+          href="/experience/create"
           text="Add an experience"
         />
         <BannerTile
-          image="https://www.vectorstock.com/royalty-free-vector/icon-black-noodle-vector-15375492"
-          href="/"
+          image="../../../../../public/assets/find.png"
+          href="/experiences"
           text="Find an experience"
         />
         <BannerTile
-          image="https://www.vectorstock.com/royalty-free-vector/icon-black-noodle-vector-15375492"
-          href="/"
+          image="../../../../../public/assets/find.png"
+          href="/restaurants"
           text="Find a restaurant"
         />
         <BannerTile
-          image="https://www.vectorstock.com/royalty-free-vector/icon-black-noodle-vector-15375492"
-          href="/"
+          image="../../../../../public/assets/restaurant.png"
+          href="/restaurants/add"
           text="Save a restaurant"
         />
       </div>
